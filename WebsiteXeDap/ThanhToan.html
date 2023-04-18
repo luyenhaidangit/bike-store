@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xe đạp trực tuyến - Thanh toán online</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/ThanhToan.css">
+</head>
+
+<body ng-app="app">
+    <div class="wrapper grid" ng-controller="ListBike">
+        <div class="info-delivery">
+            <h2 class="header-text">Xe đạp Trực tuyến</h2>
+            <p class="info-deli-text">Thông tin giao hàng</p>
+            <p class="user-test">Bạn đã có tài khoản chưa? <a href="DangNhap.html">Đăng nhập</a></p>
+            <form action="" method="post" class="info-deli">
+                <input type="text" ng-model="tenkh" class="input-name" placeholder="Họ và tên">
+                <div class="info-contact">
+                    <input type="email" ng-model="emailkh" class="input-email" placeholder="Email">
+                    <input type="text" ng-model="sdtkh" class="input-phone" placeholder="Số điện thoại">
+                </div>
+                <input type="text" ng-model="diachikh" class="input-address" placeholder="Địa chỉ">
+                <input type="text" ng-model="notekh" class="input-note" placeholder="Ghi chú">
+                <div class="linktink">
+                    <button class="btn-cart"><a href="GioHang.html" class="link-cart">Giỏ hàng</a></button>
+                    <a href="#" ng-click="Checkout()" class="btn-submit">Tiếp tục thanh toán</a>
+                </div>
+            </form>
+        </div>
+        <div class="info-product">
+            <table class="buyed-product">
+                <tbody id="listCart">
+                </tbody>
+            </table>
+            <div class="code-sale">
+                <input type="text" class="input-code" placeholder="Mã giảm giá">
+                <button class="use-code">Sử dụng</button>
+            </div>
+            <div class="box-price">
+                <p>Tạm tính</p>
+                <p class="price-before spTong">0₫</p>
+            </div>
+            <div class="pay-trans">
+                <p>Phí vận chuyển</p>
+                <p class="price-trans">—</p>
+            </div>
+            <div class="total-price">
+                <p>Tổng cộng</p>
+                <p class="price-after spTong"> 0₫</p>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="angular/angular.min.js"></script>
+    <script src="angular/global.js"></script>
+	<script src="angular/home.js"></script>
+
+    <script>
+        var list = JSON.parse(localStorage.getItem('cart'))
+
+        function LoadData() {
+            var str = "";
+            var t = 0;
+            for (var x of list) {
+                t += x.price * x.quantity;
+                str += `
+                        <tr>
+                            <td class="img-product"><img src="` + x.imagePath + `"></td>
+                            <td class="name-product">
+                            <p>` + x.title + `</p>
+                            <div class="color-product">` + x.quantity + `</div>
+                            </td>
+                            <td class="end-pay">` + (x.price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) + `</td>
+                        </tr>
+        `
+            }
+            document.getElementById('listCart').innerHTML = str
+            var total = document.getElementsByClassName('spTong')
+            for (i = 0; i < total.length; i++) {
+                total[i].innerHTML = t.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            }
+        }
+        LoadData();
+    </script>
+</body>
+
+</html>
